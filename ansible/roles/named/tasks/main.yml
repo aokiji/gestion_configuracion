@@ -7,6 +7,11 @@
 - name: Copiar configuracion zonas
   when: named_instalado|success
   copy: src=../files/zonas/ dest=/var/named/ owner=root group=named
-  register: zonas-copiadas
+  register: zonas_copiadas
+
+- name: Copiar configuracion servicio
+  when: named_instalado|success
+  copy: src=../files/named.conf dest=/etc/ owner=root group=named
+  register: configuracion_copiada
   notify:
     - Reiniciar named

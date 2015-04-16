@@ -1,0 +1,14 @@
+$ORIGIN git.multiservicioselmorche.es.  ; nombre de espacio en el fichero de zonas
+$TTL 2h                                 ; TTL por defecto
+
+@      IN      SOA     localhost. admin.localhost. (
+        2006081401  ; Serial
+        4h          ; Refresh
+        1h          ; Retry
+        1w          ; Expire 1 week
+        1d          ; Minimum
+ )
+
+@       IN      NS      ns0             ; hay que definir obligatoriamente un ns
+        IN      A       192.168.1.6     ; redirigimos a la ip de la red interna
+ns0     IN      A       127.0.0.1       ; ip del ns, como hay que poner algo ponemos localhost

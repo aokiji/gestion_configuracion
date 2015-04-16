@@ -1,0 +1,5 @@
+- name: Iniciar named
+  service: name=named state=started
+
+- name: Reiniciar named
+  service: name=named state=reloaded

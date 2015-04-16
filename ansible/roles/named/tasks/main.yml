@@ -1,0 +1,12 @@
+- name: Instalar named
+  pacman: name=bind state=present
+  register: named_instalado
+  notify:
+    - Iniciar named 
+
+- name: Copiar configuracion zonas
+  when: named_instalado|success
+  copy: src=../files/zonas/ dest=/var/named/ owner=root group=named
+  register: zonas-copiadas
+  notify:
+    - Reiniciar named

@@ -1,0 +1,27 @@
+$ORIGIN local.lan.     ; nombre de espacio en el fichero de zonas
+$TTL 2h                ; TTL por defecto
+
+@      IN      SOA     ns.local.lan. admin.local.lan. (
+    2006081401  ; Serial
+    4h          ; Refresh
+    1h          ; Retry
+    1w          ; Expire 1 week
+    1d          ; Minimum
+ )
+
+@               IN      NS      ns.local.lan.
+
+; Direccion de los servicios
+router          IN      A       192.168.1.1
+raspberry       IN      A       192.168.1.5
+banana          IN      A       192.168.1.6
+minas           IN      A       192.168.1.9
+git             IN      CNAME   banana
+ns              IN      CNAME   raspberry
+
+; Direccion de los hosts conocidos
+nico-notebook   IN      A       192.168.1.10
+nico-movil      IN      A       192.168.1.11
+gonzalo-pc      IN      A       192.168.1.12
+gonzalo-movil   IN      A       192.168.1.13
+nico-desktop    IN      A       192.168.1.14

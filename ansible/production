@@ -1,0 +1,14 @@
+banana.local.lan ansible_ssh_user=root ansible_python_interpreter="/usr/bin/python2"
+
+[webserver]
+banana.local.lan
+
+[nas]
+minas.local.lan
+
+[media-center]
+raspberry.local.lan
+
+[network]
+banana.local.lan
+

@@ -1,0 +1,25 @@
+$ORIGIN 1.168.192.in-addr.arpa.   ; nombre de espacio en el fichero de zonas
+$TTL 1h                           ; TTL por defecto
+
+@       IN      SOA     ns.local.lan. admin.local.lan. (
+    2007040301 ;serial
+    4h         ;refresh
+    1h         ;retry
+    1w         ;expire
+    1d         ;minimum
+)
+ 
+@       IN      NS      ns.local.lan.             ; ns.local.lan. es un servidor de nombre
+
+; Direccion de los servicios
+1       IN      PTR     router.local.lan.         ; direccion del route
+5       IN      PTR     raspberry.local.lan.      ; direccion de la raspberry pi
+6       IN      PTR     banana.local.lan.         ; direccion de la banana pi
+9       IN      PTR     minas.local.lan           ; direccion del nas
+
+; Direccion de los hosts conocidos
+10      IN      PTR     nico-notebook.local.lan.
+11      IN      PTR     nico-movil.local.lan.
+12      IN      PTR     gonzalo-pc.local.lan
+13      IN      PTR     gonzalo-movil.local.lan
+14      IN      PTR     nico-desktop.local.lan

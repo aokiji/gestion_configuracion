@@ -2,12 +2,14 @@
   pacman: name=bind state=present
   register: named_instalado
   notify:
-    - Iniciar named 
+    - Iniciar named
 
 - name: Copiar configuracion zonas
   when: named_instalado|success
   copy: src=../files/zonas/ dest=/var/named/ owner=root group=named
   register: zonas_copiadas
+  notify:
+    - Reiniciar named
 
 - name: Copiar configuracion servicio
   when: named_instalado|success
@@ -15,3 +17,6 @@
   register: configuracion_copiada
   notify:
     - Reiniciar named
+
+- name: Nos aseguramos que named este iniciado y habilitado para inicio en boot
+  service: name=named state=started enabled=yes

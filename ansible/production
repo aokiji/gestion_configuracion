@@ -1,5 +1,5 @@
-banana.local.lan ansible_ssh_user=root ansible_python_interpreter="/usr/bin/python2"
-raspberry.local.lan ansible_ssh_user=root ansible_python_interpreter="/usr/bin/python2"
+banana.local.lan
+raspberry.local.lan
 
 [webserver]
 banana.local.lan

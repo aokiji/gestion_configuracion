@@ -1,0 +1,15 @@
+- name: Instalar dhcpd
+  pacman: name=dhcp state=present
+  register: dhcpd_instalado
+  notify:
+    - Iniciar dhcpd
+
+- name: Copiar configuracion servicio
+  when: dhcpd_instalado|success
+  template: src=../files/dhcpd.conf dest=/etc/ owner=root group=root
+  register: configuracion_copiada
+  notify:
+    - Reiniciar dhcpd
+
+- name: Nos aseguramos que dhcpd este iniciado y habilitado para inicio en boot
+  service: name=dhcpd4 state=started enabled=yes

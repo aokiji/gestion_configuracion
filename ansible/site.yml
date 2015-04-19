@@ -1,3 +1,4 @@
 - hosts: network
   roles:
     - named
+    - dhcpd

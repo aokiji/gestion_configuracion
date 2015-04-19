@@ -13,8 +13,8 @@ $TTL 2h                ; TTL por defecto
 @               IN      NS      ns1.local.lan.
 
 ; Direccion de los servicios
-ns0             IN      A       192.168.1.5 ; servidor principal ns
-ns1             IN      A       192.168.1.6 ; servidor secundario ns
+ns0             IN      A       192.168.1.6 ; servidor principal ns
+ns1             IN      A       192.168.1.5 ; servidor secundario ns
 router          IN      A       192.168.1.1
 raspberry       IN      A       192.168.1.5
 banana          IN      A       192.168.1.6

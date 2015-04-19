@@ -9,7 +9,8 @@ $TTL 1h                           ; TTL por defecto
     1d         ;minimum
 )
  
-@       IN      NS      ns.local.lan.             ; ns.local.lan. es un servidor de nombre
+@               IN      NS      ns0.local.lan.
+@               IN      NS      ns1.local.lan.
 
 ; Direccion de los servicios
 1       IN      PTR     router.local.lan.         ; direccion del route

@@ -2,3 +2,7 @@
   roles:
     - named
     - dhcpd
+
+- hosts: banana.local.lan
+  roles:
+    - actualizar_dns

@@ -1,0 +1,2 @@
+- name: Reiniciar actualizar_dns
+  service: name=actualizar_dns state=restarted

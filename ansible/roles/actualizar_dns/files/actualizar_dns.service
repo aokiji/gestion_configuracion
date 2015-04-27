@@ -1,0 +1,7 @@
+[Unit]
+Description=Actualiza el dns
+After=network.target
+
+[Service]
+Type = simple
+ExecStart=/usr/bin/python2 /usr/local/bin/actualizar_dns.py

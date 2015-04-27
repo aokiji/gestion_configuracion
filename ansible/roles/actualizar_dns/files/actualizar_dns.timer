@@ -1,0 +1,9 @@
+[Unit]
+Description=Lanza actualizar_dns
+
+[Timer]
+OnCalendar=*-*-* *:30:00
+Unit=actualizar_dns.service
+
+[Install]
+WantedBy=multi-user.target

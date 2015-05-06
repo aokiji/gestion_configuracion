@@ -6,3 +6,7 @@
 - hosts: banana.local.lan
   roles:
     - actualizar_dns
+
+- hosts: minas.local.lan
+  roles:
+    - transmission

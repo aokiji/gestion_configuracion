@@ -1,0 +1,15 @@
+- name: Instalar transmission
+  apt: name=transmission-daemon state=present update_cache=yes
+  register: transmission_instalado
+  notify:
+    - Iniciar transmission
+
+- name: Copiar configuracion servicio
+  when: transmission_instalado|success
+  copy: src=../files/settings.json dest=/data0/Transmission/config/settings.json
+  register: configuracion_copiada
+  notify:
+    - Reiniciar transmission
+
+- name: Nos aseguramos que transmission este iniciado
+  service: name=transmission state=started

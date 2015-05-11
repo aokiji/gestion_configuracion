@@ -10,3 +10,7 @@
 - hosts: minas.local.lan
   roles:
     - transmission
+
+- hosts: network-storage
+  roles:
+    - net-fs

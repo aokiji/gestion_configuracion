@@ -1,0 +1,15 @@
+- name: Instalar autofs
+  pacman: name=autofs state=present
+  register: autofs_instalado
+  notify:
+    - Iniciar autofs
+
+- name: Copiar configuracion servicio
+  when: autofs_instalado|success
+  template: src=../files/auto.master dest=/etc/autofs/ owner=root group=root
+  register: configuracion_copiada
+  notify:
+    - Reiniciar autofs
+
+- name: Nos aseguramos que autofs este iniciado y habilitado para inicio en boot
+  service: name=autofs state=started enabled=yes

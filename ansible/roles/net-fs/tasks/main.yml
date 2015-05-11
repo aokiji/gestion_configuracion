@@ -13,3 +13,15 @@
 
 - name: Nos aseguramos que autofs este iniciado y habilitado para inicio en boot
   service: name=autofs state=started enabled=yes
+
+- name: Configurados puntos de montaje
+  file: src={{ item.origen }} dest=/storage/{{ item.destino }} state=link
+  with_items:
+    - { destino: 'Backup', origen: '/net/minas.local.lan/data0/Backup' }
+    - { destino: 'Musica', origen: '/net/minas.local.lan/data0/Musica' }
+    - { destino: 'Descargas', origen: '/net/minas.local.lan/data1/Descargas' }
+    - { destino: 'Peliculas', origen: '/net/minas.local.lan/data1/Peliculas' }
+    - { destino: 'Series', origen: '/net/minas.local.lan/data1/Series' }
+
+  notify:
+    - Reiniciar autofs

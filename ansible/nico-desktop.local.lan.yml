@@ -4,3 +4,4 @@
     usuario: nico
   roles:
     - vim 
+    - flash-plugin

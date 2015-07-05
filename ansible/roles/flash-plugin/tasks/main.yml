@@ -1,0 +1,15 @@
+---
+- name: comprobamos si ya se ha instalado el repositorio de adobe
+  stat: path=/etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+  register: adobe_gpg
+- name: descarga informacion de repositorios de adobe
+  get_url: dest=/tmp/ url="http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm"
+  when: adobe_gpg.stat.exists == False
+  register: adobe_repo_descargado
+- name: instala la informacion de repositorios
+  dnf: name=/tmp/adobe-release-x86_64-1.0-1.noarch.rpm
+  when: '"skipped" not in adobe_repo_descargado or adobe_repo_descargado.skipped == False'
+- name: importa la clave gpg de adobe
+  rpm_key: state=present key=/etc/pki/rpm-gpg/RPM-GPG-KEY-adobe-linux
+- name: instala flash
+  dnf: name=flash-plugin state=latest  

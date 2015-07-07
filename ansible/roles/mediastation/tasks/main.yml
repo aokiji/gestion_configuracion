@@ -1,10 +1,22 @@
 ---
+- name: "mediastation | habilitar repo owncloud-client"
+  get_url: dest=/etc/yum.repos.d/ url="http://download.opensuse.org/repositories/isv:ownCloud:desktop/Fedora_22/isv:ownCloud:desktop.repo"
+
 - name: "mediastation | instalar paquetes"
   dnf: name={{item}} state=latest
   with_items:
     - vlc
+    - autofs
+    - rpcbind
+    - owncloud-client
 
-- name: workstation | incluir enlaces en el nautilus
+- name: "mediastation | habilitamos los servicios necesarios"
+  service: name={{item}} enabled=yes state=started
+  with_items:
+    - rpcbind
+    - autofs
+
+- name: mediastation | incluir enlaces en el nautilus
   lineinfile: state=present dest="~/.config/gtk-3.0/bookmarks" line="{{item}}"
   with_items:
     - "file:///net/minas.local.lan/data1/Descargas Descargas [NAS]"

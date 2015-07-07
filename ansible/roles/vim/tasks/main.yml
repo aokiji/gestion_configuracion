@@ -1,7 +1,4 @@
 ---
-- name: vim | Asegurarse de que vim-minimal no esta instalado
-  dnf: name=vim-minimal state=absent
-
 - name: vim | Instalamos vim-enhanced
   dnf: name=vim-enhanced state=latest
 
@@ -12,18 +9,14 @@
     - vim-jedi
 
 - name: vim | Instalamos vundle
-  git: repo=https://github.com/gmarik/Vundle.vim.git dest="/home/{{usuario}}/.vim/bundle/Vundle.vim"
-  when: usuario is defined
+  git: repo=https://github.com/gmarik/Vundle.vim.git dest="~/.vim/bundle/Vundle.vim"
   become: true
-  become_user: "{{usuario}}"
 
 - name: vim | Copiamos vimrc a la configuracion del usuario
-  copy: src=../files/vimrc dest="/home/{{usuario}}/.vimrc" owner="{{usuario}}" group="{{usuario}}"
-  when: usuario is defined
+  copy: src=../files/vimrc dest="~/.vimrc" 
+  become: true
 
 - name: vim | Instalamos los plugins de vundle
   command: "vim +PluginInstall +qall"
-  when: usuario is defined
   become: true
-  become_user: "{{usuario}}"
 

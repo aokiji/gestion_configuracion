@@ -2,6 +2,8 @@
 - hosts: all
   vars:
     usuario: nico
+  become_user: nico
   roles:
     - vim 
     - flash-plugin
+    - workstation

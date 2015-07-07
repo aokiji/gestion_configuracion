@@ -1,0 +1,15 @@
+---
+- name: "mediastation | instalar paquetes"
+  dnf: name={{item}} state=latest
+  with_items:
+    - vlc
+
+- name: workstation | incluir enlaces en el nautilus
+  lineinfile: state=present dest="~/.config/gtk-3.0/bookmarks" line="{{item}}"
+  with_items:
+    - "file:///net/minas.local.lan/data1/Descargas Descargas [NAS]"
+    - "file:///net/minas.local.lan/data1/Series Series [NAS]"
+    - "file:///net/minas.local.lan/data1/Peliculas Peliculas [NAS]"
+    - "file:///net/minas.local.lan/data0/Musica Musica [NAS]"
+    - "file:///net/minas.local.lan/data0/Fotos Fotos [NAS]"
+  become: true

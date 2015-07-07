@@ -1,8 +1,7 @@
 ---
-- name: workstation | incluir enlaces en el nautilus
-  lineinfile: state=present dest="~/.config/gtk-3.0/bookmarks" line="{{item}}"
+- name: workstation | instalar paquetes necesarios
+  dnf: name={{item}} state=latest
   with_items:
-    - "file:///net/minas.local.lan/data1/Descargas Descargas [NAS]"
-    - "file:///net/minas.local.lan/data1/Series Series [NAS]"
-    - "file:///net/minas.local.lan/data1/Peliculas Peliculas [NAS]"
-  become: true
+    - keepassx
+    - eclipse-cdt
+

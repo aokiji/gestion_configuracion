@@ -4,4 +4,6 @@
   with_items:
     - keepassx
     - eclipse-cdt
-
+    - vagrant
+    - VirtualBox
+    - packer

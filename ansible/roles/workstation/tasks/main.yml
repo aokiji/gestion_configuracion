@@ -6,4 +6,6 @@
     - eclipse-cdt
     - vagrant
     - VirtualBox
-    - packer
+    - terminator
+    - nautilus-open-terminal
+

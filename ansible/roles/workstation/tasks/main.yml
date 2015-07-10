@@ -16,3 +16,7 @@
     - VirtualBox-5.0
     - terminator
     - nautilus-open-terminal
+
+- name: workstation | exportamos la variable VAGRANT_DEFAULT_PROVIDER
+  lineinfile: dest=~/.bashrc line="export VAGRANT_DEFAULT_PROVIDER=virtualbox"
+  become: true

@@ -1,10 +1,4 @@
 ---
-- name: workstation | instalar repositorio virtualbox
-  get_url: dest=/etc/yum.repos.d/ url="http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo"
-
-- name: workstation | importamos la clave gpg de virtualbox
-  rpm_key: key="https://www.virtualbox.org/download/oracle_vbox.asc" 
-
 - name: workstation | instalar paquetes necesarios
   dnf: name={{item}} state=latest
   with_items:
@@ -13,7 +7,7 @@
     - keepassx
     - eclipse-cdt
     - vagrant
-    - VirtualBox-5.0
+    - VirtualBox
     - terminator
     - nautilus-open-terminal
 

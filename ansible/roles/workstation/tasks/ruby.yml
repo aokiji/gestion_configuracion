@@ -1,0 +1,31 @@
+- name: workstation | instalar paquetes ruby
+  dnf: name={{item}} state=latest
+  with_items:
+    - ruby
+    - ruby-devel
+    - rubygem-json
+    - libyaml-devel
+    - readline-devel
+    - zlib-devel
+    - libffi-devel
+    - openssl-devel
+    - bison
+    - sqlite-devel
+
+- name: workstation | instalar clave gpg rvm
+  command: gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+  become: true
+
+- name: workstation | detectar si rvm esta instalado
+  stat: path=~/.rvm/bin/rvm
+  become: true
+  register: rvm_status
+
+- name: workstation | instalar rvm
+  shell: "\\curl -sSL https://get.rvm.io | bash -s stable"
+  become: true
+  when: rvm_status.stat.exists == False
+
+- name: workstation | instalar ruby 2.0.0 con rvm
+  command: ~/.rvm/bin/rvm install 2.0.0
+  become: true

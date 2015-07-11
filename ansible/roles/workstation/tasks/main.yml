@@ -10,7 +10,21 @@
     - VirtualBox
     - terminator
     - nautilus-open-terminal
+    - perl-App-cpanminus
+    - perl-XML-Parser
+    - perl-XML-SAX
+    - perl-XML-Simple
+    - perl-XML-LibXML
+
+- include: ../tasks/ruby.yml
+
+- name: workstation | instalar rex
+  cpanm: name=Rex
 
 - name: workstation | exportamos la variable VAGRANT_DEFAULT_PROVIDER
   lineinfile: dest=~/.bashrc line="export VAGRANT_DEFAULT_PROVIDER=virtualbox"
+  become: true
+
+- name: workstation | copiamos la configuracion de terminator
+  copy: src=../files/terminator_config dest=~/.config/terminator/config
   become: true

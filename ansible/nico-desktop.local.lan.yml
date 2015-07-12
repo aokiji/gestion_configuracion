@@ -10,3 +10,11 @@
     - mediastation
     - packer
     - zsh
+  tasks:
+    - name: crear directorio /var/data
+      file: path=/var/data state=directory mode=0777
+
+    - name: configurar montaje del disco extra
+      lineinfile: 
+        dest: /etc/fstab
+        line: UUID="25fe8d3a-7c8f-455f-aeb7-bbe760287559" /var/data ext4 defaults 1 2

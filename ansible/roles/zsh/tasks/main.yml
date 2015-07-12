@@ -1,0 +1,21 @@
+---
+- name: instalamos el paquete zsh
+  dnf: name=zsh
+
+- name: hacer zsh la terminal por defecto del usuario
+  command: chsh -s /bin/zsh {{usuario}}
+
+- name: descargamos la ultima version de prezto
+  git: 
+    repo: "https://github.com/sorin-ionescu/prezto.git"
+    dest: ~/.zprezto
+    recursive: yes
+  become: true
+
+- name: copiar ficheros de configuracion
+  copy: dest=~/.{{item}} src=../files/{{item}}
+  with_items:
+    - zshrc
+    - zprofile
+    - zpreztorc
+  become: true

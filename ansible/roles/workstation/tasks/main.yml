@@ -1,5 +1,5 @@
 ---
-- name: workstation | instalar paquetes necesarios
+- name: instalar paquetes necesarios
   dnf: name={{item}} state=latest
   with_items:
     - kernel-devel
@@ -18,13 +18,13 @@
 
 - include: ../tasks/ruby.yml
 
-- name: workstation | instalar rex
+- name: instalar rex
   cpanm: name=Rex
 
-- name: workstation | exportamos la variable VAGRANT_DEFAULT_PROVIDER
+- name: exportamos la variable VAGRANT_DEFAULT_PROVIDER
   lineinfile: dest=~/.bashrc line="export VAGRANT_DEFAULT_PROVIDER=virtualbox"
   become: true
 
-- name: workstation | copiamos la configuracion de terminator
+- name: copiamos la configuracion de terminator
   copy: src=../files/terminator_config dest=~/.config/terminator/config
   become: true

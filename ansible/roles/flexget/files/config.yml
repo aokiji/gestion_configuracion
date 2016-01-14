@@ -11,21 +11,17 @@ templates:
     disable:
       - seen
       - seen_info_hash
-    accept_all: yes
-    all_series:
-      parse_only: yes
-    exec:
-      fail_entries: yes
-      auto_escape: yes
-      on_filter:
-        for_entries: 'has_subtitle "{{location}}"'
+    check_subtitles: yes
+    if:
+      - subtitles is not None : accept
   # ensure that location doest have subtitle
   ensure_no_subtitles:
-    template:
-      - ensure_subtitles
-    exec:
-      on_filter:
-        for_entries: '! has_subtitle "{{location}}"'
+    disable:
+      - seen
+      - seen_info_hash
+    check_subtitles: yes
+    if:
+      - subtitles is None : accept
 
 tasks:
   # downloading task
@@ -74,6 +70,8 @@ tasks:
       - ensure_subtitles
     thetvdb_lookup: yes
     require_field: [series_id]
+    all_series:
+      parse_only: yes
     series:
       settings:
         numeracion_especial:

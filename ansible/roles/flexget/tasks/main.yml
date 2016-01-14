@@ -1,0 +1,55 @@
+- name: Instalar virtualenv
+  pip: name=virtualenv state=present
+
+- name: Crear el usuario para ejecutar flexget
+  user: 
+    name:       flexget 
+    group:      flexget 
+    shell:      /bin/bash 
+    home:       /var/lib/flexget 
+    createhome: yes 
+    append:     yes
+
+- name: Instalar flexget con virtualenv
+  pip:
+    name:       "{{ item }}"
+    virtualenv: /var/lib/flexget/virtualenv
+  become:       true
+  become_user:  flexget
+  with_items:
+    - flexget
+    - subliminal
+    - transmissionrpc
+
+- name: Crear directorio de configuracion de flexget
+  file:
+    state:  directory
+    dest:   /var/lib/flexget/.flexget
+    owner:  flexget
+    group:  flexget
+
+- name: Copiar ficheros de configuracion de flexget
+  copy:
+    src:    "{{ item }}"
+    dest:   /var/lib/flexget/.flexget/
+    owner:  flexget
+    group:  flexget
+  with_items:
+    - ../files/config.yml
+    - ../files/flexget-secret.yml
+
+- name: Copiar ficheros del servicio de flexget
+  copy:
+    src:    "{{ item }}"
+    dest:   /etc/systemd/system/
+    owner:  root
+    group:  root
+  with_items:
+    - ../files/flexget.timer
+    - ../files/flexget.service
+
+- name: habilitar servicio de flexget
+  service:
+    name:     flexget.timer
+    state:    started
+    enabled:  yes

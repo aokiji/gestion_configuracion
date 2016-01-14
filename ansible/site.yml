@@ -6,6 +6,7 @@
 - hosts: banana.local.lan
   roles:
     - actualizar_dns
+    - flexget
 
 - hosts: minas.local.lan
   roles:

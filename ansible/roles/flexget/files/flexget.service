@@ -1,0 +1,10 @@
+[Unit]
+Description=launch flexget
+After=remote-fs.target
+
+[Service]
+User = flexget
+Group = flexget
+Type = simple
+ExecStart=/var/lib/flexget/virtualenv/bin/flexget execute --cron
+Restart = on-failure

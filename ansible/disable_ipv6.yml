@@ -1,0 +1,7 @@
+---
+- hosts: network
+  vars:
+    usuario: nico
+  become_user: nico
+  roles:
+    - disable_ipv6

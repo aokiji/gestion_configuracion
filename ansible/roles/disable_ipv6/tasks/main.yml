@@ -1,0 +1,6 @@
+---
+- name: modificamos la configuracion para deshabilitar ipv6
+  copy: src=../files/40-ipv6.conf dest=/etc/sysctl.conf
+- name: reiniciamos sysctl
+  command: sysctl -p
+

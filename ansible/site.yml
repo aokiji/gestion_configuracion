@@ -7,6 +7,7 @@
   roles:
     - actualizar_dns
     - flexget
+    - git_server
 
 - hosts: minas.local.lan
   roles:

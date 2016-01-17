@@ -1,0 +1,45 @@
+- name: Instalar nginx
+  pacman: 
+    name:   "{{ item }}"
+    state:  present
+  with_items:
+    - nginx
+    - fcgiwrap
+
+- name: Instalar git
+  pacman:
+    name:   git
+    state:  present
+
+- name: Enlazar gitweb
+  file:
+    src:    /usr/share/gitweb
+    dest:   /srv/http/gitweb
+    state:  link
+
+- name: Configurar nginx
+  copy:
+    src:    ../files/git.conf
+    dest:   /etc/nginx/conf.d/git.conf
+    owner:  root
+    group:  root
+  notify:
+    - Reiniciar nginx
+
+- name: Copiar la configuracion de gitweb
+  copy:
+    src:    ../files/gitweb.conf
+    dest:   /etc/conf.d/
+    owner:  root
+    group:  root
+  notify:
+    - Reiniciar nginx
+
+- name: Nos aseguramos que nginx este iniciado y habilitado para inicio en boot
+  service: 
+    name:     "{{ item }}"
+    state:    started 
+    enabled:  yes
+  with_items:
+    - nginx
+    - fcgiwrap

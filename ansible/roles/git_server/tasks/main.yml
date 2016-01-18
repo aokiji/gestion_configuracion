@@ -35,6 +35,13 @@
   notify:
     - Reiniciar nginx
 
+- name: Copiar el fichero de autenticacion
+  copy:
+    src:    ../files/passwd.git
+    dest:   /etc/passwd.git
+    owner:  root
+    group:  root
+
 - name: Nos aseguramos que nginx este iniciado y habilitado para inicio en boot
   service: 
     name:     "{{ item }}"

@@ -1,0 +1,7 @@
+[Unit]
+Description=Configuracion del automount de la carpeta de datos de git
+
+[Automount]
+Where=/var/lib/gitolite/repositories
+TimeoutIdleSec=5min
+DirectoryMode=0700

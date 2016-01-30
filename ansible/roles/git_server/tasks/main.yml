@@ -51,3 +51,42 @@
   with_items:
     - nginx
     - fcgiwrap
+
+- name: Instalar gitolite
+  pacman:
+    name:   gitolite
+    state:  present
+
+- name: Configurar automontaje de la carpeta de datos de git
+  copy:
+    src:  ../files/git-data.automount
+    dest: /etc/systemd/system/var-lib-gitolite-repositories.automount
+
+- name: Configurar montaje de la carpeta de datos de git
+  copy:
+    src:  ../files/git-data.mount
+    dest: /etc/systemd/system/var-lib-gitolite-repositories.mount
+
+- name: Activar montaje de carpeta de datos de git
+  service:
+    name: var-lib-gitolite-repositories.automount
+    state:    started
+    enabled:  yes
+
+- name: Comprobar que gitolite esta inicializado
+  stat:
+    path:     /var/lib/gitolite/repositories
+  register: gitolite_inicializado
+
+- name: Copiar clave publica del usuario admin
+  copy:
+    src:  ../files/admin.pub
+    dest: /var/lib/gitolite/admin.pub
+  when:   not gitolite_inicializado.stat.exists
+
+- name: Configurar usuario admin gitolite
+  shell:        gitolite setup -pk admin.pub && rm -f admin.pub
+  become_user:  gitolite
+  become:       true
+  when:         not gitolite_inicializado.stat.exists
+

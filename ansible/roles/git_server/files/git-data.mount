@@ -1,0 +1,9 @@
+[Unit]
+Description=Configuracion del montaje de la carpeta de datos de git
+
+[Mount]
+Where=/var/lib/gitolite/repositories
+What=minas.local.lan:/data0/Git
+Type=nfs
+Options=rw,nfsvers=3
+DirectoryMode=0700

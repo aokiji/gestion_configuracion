@@ -1,0 +1,7 @@
+- name: Reiniciar nginx
+  service: 
+    name:   "{{ item }}"
+    state:  restarted
+  with_items:
+    - nginx
+    - uwsgi@owncloud

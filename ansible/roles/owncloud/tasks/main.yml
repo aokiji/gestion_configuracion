@@ -1,0 +1,50 @@
+- name: Instalar owncloud y php
+  pacman:
+    name: owncloud
+  with_items:
+    - owncloud
+    - php
+    - php-intl
+    - php-mcrypt
+    - php-apcu
+    - php-sqlite
+    - uwsgi-plugin-php
+    - nginx
+
+- name: Configurar nginx
+  copy:
+    dest:   /etc/nginx/conf.d/owncloud.conf
+    src:    ../files/nginx-owncloud.conf
+  notify:
+    - "Reiniciar nginx"
+
+- name: Configurar uwsgi-nginx
+  copy:
+    dest:   /etc/uwsgi/owncloud.ini
+    src:    ../files/owncloud.ini
+  notify:
+    - "Reiniciar nginx"
+
+- name: Dar permisos a php en el directorio apps
+  file:
+    state:  directory
+    path:   /usr/share/webapps/owncloud/apps
+    owner:  root
+    group:  http
+    mode:   0775
+
+- name: Crear carpeta de log
+  file:
+    state:  directory
+    path:   /srv/http/logs
+    owner:  http
+    group:  http
+
+- name: Habilitar servicios
+  service:
+    name:     "{{ item }}"
+    state:    started
+    enabled:  yes
+  with_items:
+    - uwsgi@owncloud
+    - nginx

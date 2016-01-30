@@ -1,6 +1,6 @@
 - name: Instalar owncloud y php
   pacman:
-    name: owncloud
+    name: "{{ item }}"
   with_items:
     - owncloud
     - php
@@ -8,6 +8,8 @@
     - php-mcrypt
     - php-apcu
     - php-sqlite
+    - php-xsl
+    - php-intl
     - uwsgi-plugin-php
     - nginx
 
@@ -33,6 +35,16 @@
     group:  http
     mode:   0775
 
+- name: Configurar automontaje de la carpeta de datos
+  copy:
+    src:  ../files/owncloud-data.automount
+    dest: /etc/systemd/system/usr-share-webapps-owncloud-data.automount
+
+- name: Configurar montaje de la carpeta de datos
+  copy:
+    src:  ../files/owncloud-data.mount
+    dest: /etc/systemd/system/usr-share-webapps-owncloud-data.mount
+
 - name: Crear carpeta de log
   file:
     state:  directory
@@ -48,3 +60,4 @@
   with_items:
     - uwsgi@owncloud
     - nginx
+    - usr-share-webapps-owncloud-data.automount

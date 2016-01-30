@@ -1,0 +1,7 @@
+[Unit]
+Description=Configuracion del automount de la carpeta de datos de owncloud
+
+[Automount]
+Where=/usr/share/webapps/owncloud/data
+DirectoryMode=0770
+TimeoutIdleSec=5min

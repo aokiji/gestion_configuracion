@@ -5,6 +5,7 @@
   with_items:
     - nginx
     - fcgiwrap
+    - uwsgi@git
 
 - name: Actualizar repositorios gitolite
   shell:        gitolite setup

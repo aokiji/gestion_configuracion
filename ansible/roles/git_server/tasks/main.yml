@@ -1,4 +1,4 @@
-- name: Instalar nginx
+- name: Instalar nginx y dependencias para cgit
   pacman: 
     name:   "{{ item }}"
     state:  present
@@ -6,11 +6,10 @@
     - nginx
     - fcgiwrap
     - perl-cgi
-
-- name: Instalar git
-  pacman:
-    name:   git
-    state:  present
+    - cgit
+    - uwsgi
+    - uwsgi-plugin-cgi
+    - git
 
 - name: Enlazar gitweb
   file:
@@ -42,6 +41,26 @@
     dest:   /etc/passwd.git
     owner:  root
     group:  root
+  notify:
+    - Reiniciar nginx
+
+- name: Configuramos fichero de configuracion de uwsgi para git
+  copy:
+    src:    ../files/uwsgi-git.ini
+    dest:   /etc/uwsgi/git.ini
+    owner:  root
+    group:  root
+  notify:
+    - Reiniciar nginx
+
+- name: Copiamos la configuracion de cgit
+  copy:
+    src:    ../files/cgitrc
+    dest:   /etc/cgitrc
+    owner:  root
+    group:  root
+  notify:
+    - Reiniciar nginx
 
 - name: Nos aseguramos que nginx este iniciado y habilitado para inicio en boot
   service: 
@@ -51,6 +70,7 @@
   with_items:
     - nginx
     - fcgiwrap
+    - uwsgi@git
 
 - name: Instalar gitolite
   pacman:

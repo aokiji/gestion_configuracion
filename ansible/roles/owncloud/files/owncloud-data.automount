@@ -5,3 +5,6 @@ Description=Configuracion del automount de la carpeta de datos de owncloud
 Where=/usr/share/webapps/owncloud/data
 DirectoryMode=0770
 TimeoutIdleSec=5min
+
+[Install]
+WantedBy=multi-user.target

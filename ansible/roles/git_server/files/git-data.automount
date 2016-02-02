@@ -5,3 +5,6 @@ Description=Configuracion del automount de la carpeta de datos de git
 Where=/var/lib/gitolite/repositories
 TimeoutIdleSec=5min
 DirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

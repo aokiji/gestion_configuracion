@@ -4,32 +4,16 @@
     state:  present
   with_items:
     - nginx
-    - fcgiwrap
     - perl-cgi
     - cgit
     - uwsgi
     - uwsgi-plugin-cgi
     - git
 
-- name: Enlazar gitweb
-  file:
-    src:    /usr/share/gitweb
-    dest:   /srv/http/gitweb
-    state:  link
-
 - name: Configurar nginx
   copy:
     src:    ../files/git.conf
     dest:   /etc/nginx/conf.d/git.conf
-    owner:  root
-    group:  root
-  notify:
-    - Reiniciar nginx
-
-- name: Copiar la configuracion de gitweb
-  copy:
-    src:    ../files/gitweb.conf
-    dest:   /etc/conf.d/
     owner:  root
     group:  root
   notify:

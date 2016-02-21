@@ -1,0 +1,8 @@
+- name: Copiar configuracion de la interfaz de red
+  template:
+    src:    ../files/eth0.network
+    dest:   /etc/systemd/network/eth0.network
+    owner:  root
+    group:  root
+  notify:
+    - Reiniciar interfaz de red

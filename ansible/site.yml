@@ -2,6 +2,7 @@
   roles:
     - named
     - dhcpd
+    - ip_estatica
 
 - hosts: banana.local.lan
   roles:

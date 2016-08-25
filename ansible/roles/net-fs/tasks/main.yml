@@ -2,7 +2,20 @@
   pacman: name=autofs state=present
   register: autofs_instalado
   notify:
-    - Iniciar autofs
+    - Reiniciar autofs
+
+- name: Instalar dependencias
+  pacman: name={{item}} state=present
+  with_items:
+    - rpcbind
+    - nfs-utils
+
+- name: Nos aseguramos que los servicios esten iniciados y habilitados para inicio en boot
+  service: name={{item}} state=started enabled=yes
+  with_items:
+    - rpcbind
+    - nfs-client.target
+    - remote-fs.target
 
 - name: Copiar configuracion servicio
   when: autofs_instalado|success
@@ -13,6 +26,11 @@
 
 - name: Nos aseguramos que autofs este iniciado y habilitado para inicio en boot
   service: name=autofs state=started enabled=yes
+
+- name: Creamos el directorio storage
+  file:
+    path: /storage
+    state: directory
 
 - name: Configurados puntos de montaje
   file: src={{ item.origen }} dest=/storage/{{ item.destino }} state=link

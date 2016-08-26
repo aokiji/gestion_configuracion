@@ -1,0 +1,2 @@
+- name: Reiniciar kodi
+  service: name=kodi state=restarted

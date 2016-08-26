@@ -4,6 +4,10 @@
     - dhcpd
     - ip_estatica
 
+- hosts: media-center
+  roles:
+    - kodi
+
 - hosts: banana.local.lan
   roles:
     - actualizar_dns

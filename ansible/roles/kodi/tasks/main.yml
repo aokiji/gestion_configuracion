@@ -1,0 +1,32 @@
+---
+- name: Instalar kodi y sus dependencias
+  pacman: name=bind state=present
+  register: kodi_instalado
+  with_items:
+    - kodi-rbp
+    - lirc
+    - upower
+    - udisks
+    - polkit
+    - unrar
+
+- name: Include kodi variables
+  include_vars: kodi.yml
+
+- name: Activar webserver
+  when: kodi_instalado|success
+  lineinfile: 
+    state: present
+    regexp: "(^.*<{{webserver[item]['text']}}(?:>|[^>]*)>).*(</{{webserver[item]['text']}}>.*)"
+    line: \1{{webserver[item]['value']}}\2
+    dest: ~kodi/.kodi/userdata/guisettings.xml
+    backrefs: yes
+  notify:
+    - Reiniciar kodi
+  with_items:
+    - active
+    - password
+    - username
+
+- name: Nos aseguramos que kodi este iniciado y habilitado para inicio en boot
+  service: name=kodi state=started enabled=yes

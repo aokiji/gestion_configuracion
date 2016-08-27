@@ -27,6 +27,7 @@
     - active
     - password
     - username
+    - allinterfaces
 
 - name: Nos aseguramos que kodi este iniciado y habilitado para inicio en boot
   service: name=kodi state=started enabled=yes

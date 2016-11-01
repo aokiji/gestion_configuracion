@@ -1,6 +1,6 @@
 ---
 - name: Instalar kodi y sus dependencias
-  pacman: name=bind state=present
+  pacman: name={{ item }} state=present
   register: kodi_instalado
   with_items:
     - kodi-rbp
@@ -9,6 +9,8 @@
     - udisks
     - polkit
     - unrar
+    - python2-crypto
+    - git
 
 - name: Include kodi variables
   include_vars: kodi.yml
@@ -31,3 +33,19 @@
 
 - name: Nos aseguramos que kodi este iniciado y habilitado para inicio en boot
   service: name=kodi state=started enabled=yes
+
+- name: Crear tarea de actualizacion automatica de las libreria
+  copy:
+    src:    "{{ item }}"
+    dest:   /etc/systemd/system/
+    owner:  root
+    group:  root
+  with_items:
+    - ../files/actualizar_libreria_kodi.timer
+    - ../files/actualizar_libreria_kodi.service
+
+- name: Habilitar servicio de actualizacion de la libreria
+  service:
+    name:     actualizar_libreria_kodi.timer
+    state:    started
+    enabled:  yes

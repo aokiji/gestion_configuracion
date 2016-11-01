@@ -1,0 +1,8 @@
+[Unit]
+Description=Actualizar la libreria de kodi
+[Timer]
+OnCalendar=*-*-* *:00:00
+Unit=actualizar_libreria_kodi.service
+
+[Install]
+WantedBy=multi-user.target

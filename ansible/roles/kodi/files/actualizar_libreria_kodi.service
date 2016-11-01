@@ -1,0 +1,7 @@
+[Unit]
+Description=Actualiza la libreria de kodi
+After=remote-fs.target
+
+[Service]
+Type = simple
+ExecStart=/usr/bin/curl --data-binary '{ "jsonrpc": "2.0", "method": "VideoLibrary.Scan", "id": "mybash"}' -H 'content-type: application/json;' http://kodi:tumadre@localhost:8080/jsonrpc

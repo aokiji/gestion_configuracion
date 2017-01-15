@@ -1,0 +1,44 @@
+---
+- name: Actualizar la cache de pacman
+  pacman:
+    update_cache: yes
+
+- name: instalar paquetes necesarios para dokuwiki
+  pacman: name={{item}} state=present
+  with_items:
+    - nginx
+    - dokuwiki
+    - php-fpm
+
+# - name: Configurar montaje de la carpeta de datos de wiki
+#   copy:
+#     src:  ../files/git-data.mount
+#     dest: /etc/systemd/system/var-lib-gitolite-repositories.mount
+
+- name: configurar php
+  lineinfile:
+    dest: /etc/php/php.ini
+    insertafter: ^;open_basedir
+    line: open_basedir=/srv/http/:/home/:/tmp/:/usr/share/pear/:/usr/share/webapps/:/etc/webapps/dokuwiki/:/var/lib/dokuwiki/
+
+- name: configurar php extensions
+  lineinfile:
+    dest: /etc/php/php.ini
+    insertafter: ^;extension=gd.so
+    line: extension=gd.so
+
+- name: configurar nginx
+  copy:
+    src: ../files/wiki.conf
+    dest: /etc/nginx/conf.d/wiki.conf
+  notify:
+    - "Reiniciar nginx"
+
+- name: iniciar servicios
+  service:
+    name:     "{{item}}"
+    state:    started
+    enabled:  yes
+  with_items:
+    - nginx
+    - php-fpm

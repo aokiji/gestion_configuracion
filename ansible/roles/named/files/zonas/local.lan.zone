@@ -20,6 +20,7 @@ raspberry       IN      A       192.168.1.5
 banana          IN      A       192.168.1.6
 minas           IN      A       192.168.1.9
 git             IN      CNAME   banana
+wiki            IN      CNAME   banana
 
 ; Direccion de los hosts conocidos
 nico-notebook   IN      A       192.168.1.10

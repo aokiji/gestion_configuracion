@@ -1,0 +1,10 @@
+[Unit]
+Description=Configuracion del automount de la carpeta de datos de git
+
+[Automount]
+Where=/var/lib/dokuwiki/data
+TimeoutIdleSec=5min
+DirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

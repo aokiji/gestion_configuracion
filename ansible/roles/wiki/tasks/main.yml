@@ -10,10 +10,21 @@
     - dokuwiki
     - php-fpm
 
-# - name: Configurar montaje de la carpeta de datos de wiki
-#   copy:
-#     src:  ../files/git-data.mount
-#     dest: /etc/systemd/system/var-lib-gitolite-repositories.mount
+- name: Configurar montaje de la carpeta de datos de git
+  copy:
+    src:  ../files/wiki-data.mount
+    dest: /etc/systemd/system/var-lib-dokuwiki-data.mount
+
+- name: Configurar automontaje de la carpeta de datos de git
+  copy:
+    src:  ../files/wiki-data.automount
+    dest: /etc/systemd/system/var-lib-dokuwiki-data.automount
+
+- name: Activar montaje de carpeta de datos de git
+  service:
+    name: var-lib-dokuwiki-data.automount
+    state:    started
+    enabled:  yes
 
 - name: configurar php
   lineinfile:

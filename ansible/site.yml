@@ -13,6 +13,7 @@
     - actualizar_dns
     - flexget
     - git_server
+    - wiki
 
 - hosts: minas.local.lan
   roles:

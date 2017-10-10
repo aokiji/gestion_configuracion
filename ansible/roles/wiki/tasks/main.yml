@@ -10,17 +10,17 @@
     - dokuwiki
     - php-fpm
 
-- name: Configurar montaje de la carpeta de datos de git
+- name: Configurar montaje de la carpeta de datos de wiki
   copy:
     src:  ../files/wiki-data.mount
     dest: /etc/systemd/system/var-lib-dokuwiki-data.mount
 
-- name: Configurar automontaje de la carpeta de datos de git
+- name: Configurar automontaje de la carpeta de datos de wiki
   copy:
     src:  ../files/wiki-data.automount
     dest: /etc/systemd/system/var-lib-dokuwiki-data.automount
 
-- name: Activar montaje de carpeta de datos de git
+- name: Activar montaje de carpeta de datos de wiki
   service:
     name: var-lib-dokuwiki-data.automount
     state:    started
@@ -35,8 +35,11 @@
 - name: configurar php extensions
   lineinfile:
     dest: /etc/php/php.ini
-    insertafter: ^;extension=gd.so
-    line: extension=gd.so
+    insertafter: "^;extension={{ item }}"
+    line: "extension={{ item }}"
+  with_items:
+    - gd.so
+    - pdo_sqlite.so
 
 - name: configurar nginx
   copy:

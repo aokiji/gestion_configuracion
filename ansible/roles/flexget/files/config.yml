@@ -1,4 +1,4 @@
-secrets: flexget-secret.yml
+variables: flexget-secret.yml
 templates:
   # find all downloaded video files
   find_downloaded_video_files:
@@ -13,7 +13,7 @@ templates:
       - seen_info_hash
     check_subtitles: yes
     if:
-      - subtitles is not None : accept
+      - subtitles is not none : accept
   # ensure that location doest have subtitle
   ensure_no_subtitles:
     disable:
@@ -21,12 +21,12 @@ templates:
       - seen_info_hash
     check_subtitles: yes
     if:
-      - subtitles is None : accept
+      - subtitles is none : accept
 
 tasks:
   # downloading task
   download-rss:
-    rss: http://showrss.info/rss.php?user_id=201004&hd=null&proper=null 
+    rss: http://showrss.info/user/48236.rss?magnets=true&namespaces=true&name=null&quality=null&re=null
     # fetch all the feed series
     all_series: yes
     priority: 1
@@ -40,11 +40,11 @@ tasks:
         - '*.rar'
         - '*.zip'
     transmission:
-      host: '{{ secrets.transmission.host }}'
+      host: '{? transmission.host ?}'
       port: 8181
-      username: '{{ secrets.transmission.username }}'
-      password: '{{ secrets.transmission.password }}'
-    
+      username: '{? transmission.username ?}'
+      password: '{? transmission.password ?}'
+
   # descarga de subtitulos
   donwload-subtitles:
     priority: 10
@@ -65,7 +65,7 @@ tasks:
     priority: 20
     disable:
       - retry_failed
-    template: 
+    template:
       - find_downloaded_video_files
       - ensure_subtitles
     thetvdb_lookup: yes
@@ -84,18 +84,19 @@ tasks:
         - Modern Family
     move:
       to: "/storage/Series/{{ tvdb_series_name }}/Season {{series_season|pad(2)}}"
-      filename: '{{ tvdb_series_name }}-{{ series_id }}-{{ tvdb_ep_name }}{{ location | pathext }}'
+      rename: '{{ tvdb_series_name }}-{{ series_id }}-{{ tvdb_ep_name }}{{ location | pathext }}'
       along:
-        - srt
-        - en.srt
-        - eng.srt  
+        extensions:
+          - srt
+          - en.srt
+          - eng.srt
       clean_source: 100
   # sort movies
   sort-movies:
     priority: 21
     disable:
       - retry_failed
-    template: 
+    template:
       - find_downloaded_video_files
       - ensure_subtitles
     imdb_lookup: yes
@@ -103,20 +104,21 @@ tasks:
     require_field: [movie_name, movie_year]
     move:
       to: "/storage/Peliculas/{{ movie_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }} ({{ movie_year }})/"
-      filename: "{{ movie_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }} ({{ movie_year }}) - {{ quality }}.{{ location[-3:] }}"
+      rename: "{{ movie_name|replace('/', '_')|replace(':', ' -')|replace(',', '') }} ({{ movie_year }}) - {{ quality }}.{{ location[-3:] }}"
       along:
-        - srt
-        - en.srt
-        - eng.srt  
+        extensions:
+          - srt
+          - en.srt
+          - eng.srt
       clean_source: 100
   # cleans completed torrents
   clean-complete-torrents:
     priority: 5
     clean_transmission:
-      host: '{{ secrets.transmission.host }}'
+      host: '{? transmission.host ?}'
       port: 8181
-      username: '{{ secrets.transmission.username }}'
-      password: '{{ secrets.transmission.password }}'
+      username: '{? transmission.username ?}'
+      password: '{? transmission.password ?}'
       finished_for: 2 hours
       transmission_seed_limits: yes
     disable: details

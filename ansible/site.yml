@@ -10,6 +10,7 @@
 
 - hosts: banana.local.lan
   roles:
+    - locale
     - actualizar_dns
     - flexget
     - git_server

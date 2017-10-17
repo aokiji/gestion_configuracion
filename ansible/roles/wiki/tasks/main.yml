@@ -41,6 +41,15 @@
     - gd.so
     - pdo_sqlite.so
 
+- name: ensure nginx uses conf.d dir
+  lineinfile:
+    line: "include /etc/nginx/conf.d/*.conf;"
+    state: present
+    insertafter: '^\s*http.*\{'
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - "Reiniciar nginx"
+
 - name: configurar nginx
   copy:
     src: ../files/wiki.conf

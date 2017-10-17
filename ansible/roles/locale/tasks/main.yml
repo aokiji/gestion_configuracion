@@ -1,0 +1,7 @@
+- name: Generate locale
+  locale_gen:
+    name: es_ES.UTF-8
+    state: present
+
+- name: Set locale
+  command: localectl set-locale LANG=es_ES.UTF-8

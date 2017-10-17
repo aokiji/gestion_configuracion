@@ -1,5 +1,5 @@
 - name: Instalar nginx y dependencias para cgit
-  pacman: 
+  pacman:
     name:   "{{ item }}"
     state:  present
   with_items:
@@ -9,6 +9,21 @@
     - uwsgi
     - uwsgi-plugin-cgi
     - git
+    - fcgiwrap
+    - nfs-utils
+
+- name: Ensure nginx conf.d directory exists
+  file:
+    path: /etc/nginx/conf.d
+    state: directory
+
+- name: Ensure git server directory exists
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - /srv/http/git/log
+    - /srv/http/git/run
 
 - name: Configurar nginx
   copy:
@@ -45,16 +60,6 @@
     group:  root
   notify:
     - Reiniciar nginx
-
-- name: Nos aseguramos que nginx este iniciado y habilitado para inicio en boot
-  service: 
-    name:     "{{ item }}"
-    state:    started 
-    enabled:  yes
-  with_items:
-    - nginx
-    - fcgiwrap
-    - uwsgi@git
 
 - name: Instalar gitolite
   pacman:
@@ -94,3 +99,12 @@
   become:       true
   when:         not gitolite_inicializado.stat.exists
 
+- name: Nos aseguramos que nginx este iniciado y habilitado para inicio en boot
+  service:
+    name:     "{{ item }}"
+    state:    started
+    enabled:  yes
+  with_items:
+    - nginx
+    - fcgiwrap
+    - uwsgi@git

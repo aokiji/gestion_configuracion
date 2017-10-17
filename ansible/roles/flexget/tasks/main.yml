@@ -1,19 +1,28 @@
 - name: Instalar virtualenv
-  pip: name=virtualenv state=present
+  pip:
+    name: virtualenv
+    state: present
+    executable: /usr/bin/pip2
+
+- name: Create flexget group
+  group:
+    name: flexget
+    state: present
 
 - name: Crear el usuario para ejecutar flexget
-  user: 
-    name:       flexget 
-    group:      flexget 
-    shell:      /bin/bash 
-    home:       /var/lib/flexget 
-    createhome: yes 
+  user:
+    name:       flexget
+    group:      flexget
+    shell:      /bin/bash
+    home:       /var/lib/flexget
+    createhome: yes
     append:     yes
 
 - name: Instalar flexget con virtualenv
   pip:
     name:       "{{ item }}"
     virtualenv: /var/lib/flexget/virtualenv
+    state:        latest
   become:       true
   become_user:  flexget
   with_items:

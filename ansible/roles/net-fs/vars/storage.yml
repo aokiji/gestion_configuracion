@@ -1,0 +1,6 @@
+data_storage:
+  - { folder: 'Backup', num_data: 0 }
+  - { folder: 'Musica', num_data: 0 }
+  - { folder: 'Descargas', num_data: 1 }
+  - { folder: 'Peliculas', num_data: 1 }
+  - { folder: 'Series', num_data: 1 }

@@ -6,7 +6,7 @@
     - kodi-rbp
     - lirc
     - upower
-    - udisks
+    - udisks2
     - polkit
     - unrar
     - python2-crypto
@@ -17,7 +17,7 @@
 
 - name: Activar webserver
   when: kodi_instalado|success
-  lineinfile: 
+  lineinfile:
     state: present
     regexp: "(^.*<{{webserver[item]['text']}}(?:>|[^>]*)>).*(</{{webserver[item]['text']}}>.*)"
     line: \1{{webserver[item]['value']}}\2

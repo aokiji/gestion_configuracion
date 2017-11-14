@@ -1,45 +1,22 @@
-- name: Instalar autofs
-  pacman: name=autofs state=present
-  register: autofs_instalado
-  notify:
-    - Reiniciar autofs
+- name: Include storage variables
+  include_vars: storage.yml
 
-- name: Instalar dependencias
-  pacman: name={{item}} state=present
-  with_items:
-    - rpcbind
-    - nfs-utils
+- name: Instalar nfs-utils
+  pacman: name=nfs-utils state=present
 
-- name: Nos aseguramos que los servicios esten iniciados y habilitados para inicio en boot
-  service: name={{item}} state=started enabled=yes
-  with_items:
-    - rpcbind
-    - nfs-client.target
-    - remote-fs.target
+- name: Copiar configuracion servicio montaje storage
+  template:
+    src: ../files/template.{{ item[0] }}
+    dest: "/etc/systemd/system/storage-{{ item[1].folder }}.{{ item[0] }}"
+    owner: root
+    group: root
+  with_nested:
+    - [ 'automount', 'mount' ]
+    - "{{ data_storage }}"
 
-- name: Copiar configuracion servicio
-  when: autofs_instalado|success
-  template: src=../files/auto.master dest=/etc/autofs/ owner=root group=root
-  register: configuracion_copiada
-  notify:
-    - Reiniciar autofs
-
-- name: Nos aseguramos que autofs este iniciado y habilitado para inicio en boot
-  service: name=autofs state=started enabled=yes
-
-- name: Creamos el directorio storage
-  file:
-    path: /storage
-    state: directory
-
-- name: Configurados puntos de montaje
-  file: src={{ item.origen }} dest=/storage/{{ item.destino }} state=link
-  with_items:
-    - { destino: 'Backup', origen: '/net/minas.local.lan/data0/Backup' }
-    - { destino: 'Musica', origen: '/net/minas.local.lan/data0/Musica' }
-    - { destino: 'Descargas', origen: '/net/minas.local.lan/data1/Descargas' }
-    - { destino: 'Peliculas', origen: '/net/minas.local.lan/data1/Peliculas' }
-    - { destino: 'Series', origen: '/net/minas.local.lan/data1/Series' }
-
-  notify:
-    - Reiniciar autofs
+- name: Activar automount para storage
+  service:
+    name: "storage-{{ item.folder }}.automount"
+    state: started
+    enabled: yes
+  with_items: "{{ data_storage }}"

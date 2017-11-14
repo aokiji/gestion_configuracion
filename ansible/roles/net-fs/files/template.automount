@@ -1,0 +1,10 @@
+[Unit]
+Description=Configuracion del automount de la carpeta {{item[1].folder}}
+
+[Automount]
+Where=/storage/{{item[1].folder}}
+TimeoutIdleSec=5min
+DirectoryMode=0700
+
+[Install]
+WantedBy=multi-user.target

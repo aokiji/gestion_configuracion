@@ -1,0 +1,9 @@
+[Unit]
+Description=Configuracion del montaje de la carpeta {{item[1].folder}}
+
+[Mount]
+Where=/storage/{{item[1].folder}}
+What=minas.local.lan:/data{{item[1].num_data}}/{{item[1].folder}}
+Type=nfs
+Options=rw,nfsvers=3
+DirectoryMode=0700

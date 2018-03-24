@@ -4,4 +4,6 @@ After=network.target
 
 [Service]
 Type = simple
-ExecStart=/usr/bin/python2 /usr/local/bin/actualizar_dns.py
+ExecStart=/usr/bin/python /usr/local/bin/actualizar_dns.py
+Environment=AWS_ACCESS_KEY_ID={{ aws['aws_access_key_id'] }}
+Environment=AWS_SECRET_ACCESS_KEY={{ aws['aws_secret_access_key'] }}

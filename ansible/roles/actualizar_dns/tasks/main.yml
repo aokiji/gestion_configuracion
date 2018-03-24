@@ -1,32 +1,32 @@
-- name: Instalar beautifulsoup
-  pacman: name=python2-beautifulsoup4 state=present
-  register: bs4_instalado
+- name: Include aws credentials
+  include_vars: vars/aws.yml
 
-- name: Instalar pycurl
-  pacman: name=python2-pycurl state=present
-  register: pycurl_instalado
+- name: Instalar boto
+  pacman: name=python-boto3 state=present
+  register: boto_instalado
 
 - name: Copiar script servicio
-  when: bs4_instalado|success
   copy: src=../files/actualizar_dns.py dest=/usr/local/bin owner=root group=root
   register: script_copiado
 
 - name: Copiar servicio
-  when: bs4_instalado|success
-  copy: src=../files/actualizar_dns.service dest=/etc/systemd/system owner=root group=root
+  template:
+    src: ../files/actualizar_dns.service
+    dest: /etc/systemd/system/actualizar_dns.service
+    owner: root
+    group: root
   register: servicio_copiado
   notify:
     - Reiniciar actualizar_dns
-  
+
 - name: Copiar timer
-  when: bs4_instalado|success
   copy: src=../files/actualizar_dns.timer dest=/etc/systemd/system owner=root group=root
-  register: timer_copiado   
+  register: timer_copiado
   notify:
     - Reiniciar actualizar_dns
 
 - name: Nos aseguramos que actualizar_dns este iniciado y habilitado para inicio en boot
   service: name=actualizar_dns.service state=started enabled=yes
-  
+
 - name: Nos aseguramos que el timer funcione
   service: name=actualizar_dns.timer state=started enabled=yes

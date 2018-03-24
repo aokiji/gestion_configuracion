@@ -4,4 +4,4 @@
     state:  restarted
   with_items:
     - nginx
-    - uwsgi@owncloud
+    - uwsgi@nextcloud

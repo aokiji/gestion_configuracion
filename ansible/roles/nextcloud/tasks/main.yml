@@ -1,0 +1,75 @@
+- name: Instalar nextcloud y php
+  pacman:
+    name: "{{ item }}"
+  with_items:
+    - nextcloud
+    - php
+    - php-intl
+    - php-apcu
+    - php-sqlite
+    - php-xsl
+    - php-intl
+    - uwsgi-plugin-php
+    - nginx
+    - certbot
+    - certbot-nginx
+
+- name: Configurar nginx
+  copy:
+    dest:   /etc/nginx/conf.d/nextcloud.conf
+    src:    ../files/nginx-nextcloud.conf
+  notify:
+    - "Reiniciar nginx"
+
+- name: Configurar uwsgi-nginx
+  copy:
+    dest:   /etc/uwsgi/nextcloud.ini
+    src:    ../files/nextcloud.ini
+  notify:
+    - "Reiniciar nginx"
+
+- name: Configurar certbot
+  copy:
+    dest:   /etc/systemd/system/certbot.service
+    src:    ../files/cerbot.service
+
+- name: Configurar temporizador certbot
+  copy:
+    dest:   /etc/systemd/system/certbot.timer
+    src:    ../files/cerbot.timer
+
+- name: Dar permisos a php en el directorio apps
+  file:
+    state:  directory
+    path:   /usr/share/webapps/nextcloud/apps
+    owner:  root
+    group:  http
+    mode:   0775
+
+- name: Configurar automontaje de la carpeta de datos
+  copy:
+    src:  ../files/nextcloud-data.automount
+    dest: /etc/systemd/system/usr-share-webapps-nextcloud-data.automount
+
+- name: Configurar montaje de la carpeta de datos
+  copy:
+    src:  ../files/nextcloud-data.mount
+    dest: /etc/systemd/system/usr-share-webapps-nextcloud-data.mount
+
+- name: Crear carpeta de log
+  file:
+    state:  directory
+    path:   /srv/http/logs
+    owner:  http
+    group:  http
+
+- name: Habilitar servicios
+  service:
+    name:     "{{ item }}"
+    state:    started
+    enabled:  yes
+  with_items:
+    - uwsgi@nextcloud
+    - cerbot.timer
+    - nginx
+    - usr-share-webapps-nextcloud-data.automount

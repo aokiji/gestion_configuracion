@@ -1,0 +1,10 @@
+[Unit]
+Description=Configuracion del automount de la carpeta de datos de nextcloud
+
+[Automount]
+Where=/usr/share/webapps/nextcloud/data
+DirectoryMode=0770
+TimeoutIdleSec=5min
+
+[Install]
+WantedBy=multi-user.target

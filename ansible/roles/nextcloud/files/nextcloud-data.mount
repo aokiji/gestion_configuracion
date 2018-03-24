@@ -1,0 +1,9 @@
+[Unit]
+Description=Configuracion del montaje de la carpeta de datos de nextcloud
+
+[Mount]
+Where=/usr/share/webapps/nextcloud/data
+What=minas.local.lan:/data0/Cloud
+Type=nfs
+DirectoryMode=0770
+Options=rw,nfsvers=3

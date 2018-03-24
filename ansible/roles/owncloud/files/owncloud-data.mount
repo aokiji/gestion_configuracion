@@ -1,9 +1,0 @@
-[Unit]
-Description=Configuracion del montaje de la carpeta de datos de owncloud
-
-[Mount]
-Where=/usr/share/webapps/owncloud/data
-What=minas.local.lan:/data0/Cloud
-Type=nfs
-DirectoryMode=0770
-Options=rw,nfsvers=3
